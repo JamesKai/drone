@@ -1,0 +1,24 @@
+clone:
+  git:
+    image: plugins/git
+    depath: 50
+    tags: true
+pipeline:
+
+  create-production-image:
+    image: 220.132.168.58/foodbank.io/ci-base:latest
+    secrets: [ production_env, docker_username, docker_password ]
+    commands:
+      - echo $DOCKER_PASSWORD | docker login 220.132.168.58 --username $DOCKER_USERNAME --password-stdin
+      - docker build -f Dockerfile.production -t 220.132.168.58/foodbank.io/web-release .
+      - docker push 220.132.168.58/foodbank.io/drone:${DRONE_TAG}
+    volumes:
+      # private docker register server certs
+      - /etc/docker/certs.d:/etc/docker/certs.d
+      - /var/run/docker.sock:/var/run/docker.sock
+    when:
+      event: tag
+
+branches: master
+
+
