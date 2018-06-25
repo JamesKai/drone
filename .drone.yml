@@ -10,7 +10,9 @@ pipeline:
     secrets: [ docker_username, docker_password ]
     commands:
       - echo $DOCKER_PASSWORD | docker login 220.132.168.58 --username $DOCKER_USERNAME --password-stdin
-      - docker build -t 220.132.168.58/foodbank.io/drone:$${DRONE_TAG} .
+      - docker build -t 220.132.168.58/foodbank.io/drone:latest .
+      - docker tag 220.132.168.58/foodbank.io/drone:latest 220.132.168.58/foodbank.io/drone:$${DRONE_TAG}
+      - docker push 220.132.168.58/foodbank.io/drone:latest
       - docker push 220.132.168.58/foodbank.io/drone:$${DRONE_TAG}
     volumes:
       # private docker register server certs
