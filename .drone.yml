@@ -11,7 +11,7 @@ pipeline:
     commands:
       - echo $DOCKER_PASSWORD | docker login 220.132.168.58 --username $DOCKER_USERNAME --password-stdin
       - docker build -f Dockerfile.production -t 220.132.168.58/foodbank.io/web-release .
-      - docker push 220.132.168.58/foodbank.io/drone:${DRONE_TAG}
+      - docker push 220.132.168.58/foodbank.io/drone:$${DRONE_TAG}
     volumes:
       # private docker register server certs
       - /etc/docker/certs.d:/etc/docker/certs.d
